@@ -1,0 +1,44 @@
+# ==============================================================================
+#  docker-compose.yml — convenience wrappers around the pinned build container
+#
+#  Build the image once:   docker compose build
+#  Build the firmware:      docker compose run --rm builder
+#  Get a toolchain shell:   docker compose run --rm builder bash
+#  Flash the target:        docker compose run --rm flasher      (see DOCKER.md)
+#
+#  The current repo is bind-mounted at /work, so artifacts land in ./Build on
+#  the host exactly as a native build would.
+# ==============================================================================
+
+x-common: &common
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: pegasus-fw-toolchain:10.3-2021.10
+  working_dir: /work
+  volumes:
+    - .:/work
+
+services:
+  # ---- Compile firmware (default) -------------------------------------------
+  builder:
+    <<: *common
+    # On Linux hosts, uncomment to write Build/ artifacts as your own user
+    # instead of UID 1000 (harmless on Windows/macOS Docker Desktop):
+    # user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    command: ["bash", "docker/build.sh"]
+
+  # ---- Flash the target over ST-Link (USB) ----------------------------------
+  #  Requires the ST-Link to be visible inside the container:
+  #   - Windows/macOS: attach it into WSL2/the VM with usbipd-win first.
+  #   - Linux: it's already on /dev/bus/usb.
+  #  Runs privileged + as root so OpenOCD can open the raw USB device.
+  #  Full walkthrough (incl. usbipd-win steps): DOCKER.md → "Flashing".
+  flasher:
+    <<: *common
+    privileged: true
+    user: "0:0"                     # root — needed for raw USB access
+    volumes:
+      - .:/work
+      - /dev/bus/usb:/dev/bus/usb   # the passed-through ST-Link shows up here
+    command: ["bash", "docker/flash.sh"]

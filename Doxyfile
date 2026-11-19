@@ -1,0 +1,50 @@
+PROJECT_NAME           = "Pegasus ATS Firmware"
+PROJECT_BRIEF          = "Firmware, bootloader, and host tools for the Pegasus ATS motor controller."
+OUTPUT_DIRECTORY       = docs
+
+INPUT                  = .
+INPUT_ENCODING         = UTF-8
+FILE_PATTERNS          = *.c *.h *.cpp *.hpp *.py *.md *.dox
+RECURSIVE              = YES
+EXCLUDE                = Build Debug PegasusBuild .git .vscode .settings docs/html
+EXCLUDE_PATTERNS       = */CMakeFiles/* */Testing/* */__pycache__/*
+MARKDOWN_SUPPORT       = YES
+MARKDOWN_ID_STYLE      = GITHUB
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+SOURCE_BROWSER         = YES
+REFERENCES_LINK_SOURCE = YES
+CREATE_SUBDIRS         = YES
+
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+SEARCH_INCLUDES        = YES
+INCLUDE_PATH           = Core/Inc Core/Bootloader Core/Utilities \
+                         Drivers/CMSIS/Include \
+                         Drivers/CMSIS/Device/ST/STM32H7xx/Include \
+                         Drivers/STM32H7xx_HAL_Driver/Inc
+OPTIMIZE_OUTPUT_FOR_C  = YES
+
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_TREEVIEW      = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
+
+HAVE_DOT               = YES
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
+GRAPHICAL_HIERARCHY    = YES
+DIRECTORY_GRAPH        = YES
+DOT_GRAPH_MAX_NODES    = 1000
+MAX_DOT_GRAPH_DEPTH    = 0
+
+WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = NO
+WARN_AS_ERROR          = NO

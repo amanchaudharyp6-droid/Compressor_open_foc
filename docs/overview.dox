@@ -1,0 +1,82 @@
+/**
+ * @mainpage Pegasus ATS Firmware
+ *
+ * Pegasus ATS firmware targets the STM32H743ZITx and combines a generated
+ * field-oriented motor-control model with the application, board-support,
+ * and bootloader code.
+ *
+ * @section firmware_components Main Components
+ *
+ * - @c Core/Inc contains firmware interfaces, configuration, and
+ *   motor and vehicle profiles.
+ * - @c Core/Src contains the control loop, application logic,
+ *   peripheral setup, interrupt handlers, and supporting modules.
+ * - @c Core/Bootloader contains the bootloader entry point
+ *   and image-management code.
+ * - @c Core/Utilities contains flash, CRC, firmware-update,
+ *   and CAN transport utilities.
+ * - @c Drivers contains the STM32 HAL and CMSIS device support
+ *   included by the firmware.
+ * - @c tools contains host-side Python utilities and their tests.
+ *
+ * @section firmware_execution Execution Context
+ *
+ * The application runs two scheduled rates in @ref rt_OneStep:
+ *
+ * - The base-rate path updates the current-reference estimator and executes
+ *   @ref FOC_Loop_step0.
+ * - Every tenth base-rate step, the subrate path updates speed feedback and
+ *   executes @ref FOC_Loop_step1.
+ *
+ * ADC conversion callbacks handle time-critical current sampling and FOC state
+ * transitions. The FDCAN receive callback passes command frames to
+ * @ref can_rx_dispatch. The application loop applies torque limits through
+ * @ref apply_torque_scaling before setting the model's torque reference.
+ *
+ * Doxygen's call and caller graphs are enabled for documented functions. Open
+ * a function's page to follow its outgoing calls and callers; use the file
+ * pages and directory tree to browse source-level summaries.
+ *
+ * @section firmware_images Firmware Images
+ *
+ * CMake builds three separate images: the bootloader, App1, and App2. The
+ * bootloader starts the application and supports firmware updates; App1 and
+ * App2 are application slots. Build and hardware details are in the repository
+ * README.
+ *
+ * For build, hardware, configuration, and operating details, see the repository
+ * README.
+ */
+
+/**
+ * @fn void rt_OneStep(void)
+ * @brief Schedules the base-rate and subrate control-model steps.
+ */
+
+/**
+ * @fn void FOC_Loop_step0(void)
+ * @brief Runs the 10 kHz base-rate FOC control-model step.
+ */
+
+/**
+ * @fn void FOC_Loop_step1(void)
+ * @brief Runs the 1 kHz subrate FOC control-model step.
+ */
+
+/**
+ * @fn void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+ * @brief Receives CAN frames and dispatches application commands.
+ */
+
+/**
+ * @fn void can_rx_dispatch(uint32_t id, const uint8_t *msg)
+ * @brief Routes a received CAN command to its frame handler.
+ */
+
+/**
+ * @fn float apply_torque_scaling(float torque_ref, float speed_rad_s,
+ *                                power_mode_t drive_mode, fnr_state_t direction,
+ *                                float motor_temp, float ctrl_temp,
+ *                                TempDerateResult_t *derate_result_out)
+ * @brief Applies the active torque, speed, power, and temperature limits.
+ */

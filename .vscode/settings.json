@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "throttle_mapping.h": "c",
+        "main.h": "c",
+        "speed_sensing.h": "c",
+        "safety_and_cutoffs.h": "c",
+        "fdcan.h": "c",
+        "core_cm7.h": "c",
+        "stm32h7xx.h": "c",
+        "cache_manager.h": "c",
+        "float.h": "c",
+        "fdcan_al.h": "c",
+        "adc.h": "c"
+    },
+    "cortex-debug.variableUseNaturalFormat": false
+}

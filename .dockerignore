@@ -1,0 +1,9 @@
+# The image bakes only the toolchain and COPYs no source, so the build context
+# is unused — but Docker still uploads it. Keep it tiny for fast image builds.
+Build/
+PegasusBuild/
+Debug/
+.git/
+.vscode/
+*.map
+*.stackdump

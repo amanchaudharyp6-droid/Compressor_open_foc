@@ -1,0 +1,26 @@
+# OpenOCD udev rules for ST-Link probes (ST-Link V1 / V2 / V2.1 / V3).
+#
+# HOST-SIDE file for LINUX hosts only. It lets a non-root user (and therefore a
+# non-privileged container that bind-mounts /dev/bus/usb) open the ST-Link.
+#
+# Install on the host:
+#   sudo cp docker/60-openocd.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload && sudo udevadm trigger
+#   # then unplug/replug the ST-Link
+#
+# Not needed if you flash with the default (privileged, root) `flasher` service,
+# and irrelevant on Windows/macOS (use usbipd-win / host flashing — see DOCKER.md).
+
+# ST-Link/V1
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3744", MODE="660", GROUP="plugdev", TAG+="uaccess"
+# ST-Link/V2
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE="660", GROUP="plugdev", TAG+="uaccess"
+# ST-Link/V2.1
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", MODE="660", GROUP="plugdev", TAG+="uaccess"
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3752", MODE="660", GROUP="plugdev", TAG+="uaccess"
+# ST-Link/V3
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374d", MODE="660", GROUP="plugdev", TAG+="uaccess"
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374e", MODE="660", GROUP="plugdev", TAG+="uaccess"
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374f", MODE="660", GROUP="plugdev", TAG+="uaccess"
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3753", MODE="660", GROUP="plugdev", TAG+="uaccess"
+ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3754", MODE="660", GROUP="plugdev", TAG+="uaccess"

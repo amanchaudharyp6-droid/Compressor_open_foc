@@ -1,0 +1,95 @@
+#ifndef __FDCAN_H_
+#define __FDCAN_H_
+
+#include "main.h"
+
+typedef struct {
+    uint32_t arbitration_id;
+    uint32_t format;
+    uint8_t data[8];
+    uint8_t dlc;
+} CAN_TxMessage_t;
+
+typedef struct {
+    CAN_TxMessage_t buffer[CAN_TX_QUEUE_SIZE];
+    volatile uint16_t head;
+    volatile uint16_t tail;
+    volatile uint16_t count;
+} CAN_TxQueue_t;
+
+/* CubeMX hardware init (defined in fdcan.c) — peripheral handle + init entry */
+extern FDCAN_HandleTypeDef hfdcan2;
+void MX_FDCAN2_Init(void);
+
+void FDCAN_SETUP();
+void OTA_FDCAN_SETUP(void);   /* OTA-only filters (0x6FA/0x7FE/0x7FF), reject rest of bus */
+void OTA_FDCAN_RESTORE(void); /* back to normal filters after a failed OTA */
+void _fdcan_transmit_on_can(uint32_t arbitration_id, uint32_t format, uint8_t * can_data, uint8_t dlc);
+void _fdcan_filter_IDList(uint32_t can_receive_id, uint32_t format, uint32_t filter_bank, uint32_t fifo);
+#if DEBUG_CAN_ID
+void Send_Data_On_CAN_401(void);
+void Send_Data_On_CAN_402(void);
+void Send_Data_On_CAN_403(void);
+void Send_Data_On_CAN_404(void);
+void Send_Data_On_CAN_405(void);
+void Send_Data_On_CAN_406(void);
+void Send_Data_On_CAN_407(void);
+void Send_Data_On_CAN_408(void);
+void Send_Data_On_CAN_409(void);
+void Send_Data_On_CAN_410(void);
+void Send_Data_On_CAN_411(void);	/* U/V/W temperatures */
+void Send_Data_On_CAN_412(void);	/* U/V/W phase currents */
+#if FOC_BENCH_FAST_TLM
+void Send_Data_On_CAN_40A(void);	/* bench encoder diagnostics, 10 Hz */
+#endif
+#endif
+
+#if VH_CAN_ID
+/* Vehicle */
+void Send_on_CAN_705(float Mtr_Temp, float Cntrl_Temp);
+void Send_on_CAN_706(float bus_voltage, float Speed_KMPH, uint8_t error_c);
+void Send_on_CAN_708(uint8_t error_c_1, uint8_t error_c_2);
+void Send_on_CAN_709(uint8_t historic_errors);
+void Send_on_CAN_710(float throttle_percent, float throttle_voltage);
+void Send_on_CAN_715(float rpm, float bus_voltage, float lv_12v_voltage);
+void Send_on_CAN_716(float vrms, float irms);
+void Send_on_CAN_717(float rpm);
+void Send_on_CAN_724(float torque_ref);
+void Send_on_CAN_726(void);
+void Send_on_CAN_7A1(void);
+void Send_on_CAN_7A2(void);
+void Send_on_CAN_7A3(void);
+void Send_on_CAN_7B0(void);
+void Send_on_CAN_6F0(void);
+void Send_on_CAN_6F1(void);
+void Send_on_CAN_6F2(void);
+#endif
+
+void CAN_Queue_Init(void);
+uint8_t CAN_Queue_Push(uint32_t arbitration_id, uint32_t format, uint8_t *data, uint8_t dlc);
+uint8_t CAN_Queue_IsEmpty(void);
+void CAN_Queue_Process(void);
+uint16_t CAN_Queue_GetCount(void);
+void CAN_Queue_Push_And_Kickstart(uint32_t arbitration_id, uint32_t format, uint8_t *data, uint8_t dlc);
+void Schedule_7Ax_Transmission(void);
+void Fast_Tlm_Accumulate(void);   /* 10 kHz, after rt_OneStep */
+void Fast_Tlm_Tick_1ms(void);     /* TIM17 */
+void Send_heartbeat(void);
+
+#if FOC_BENCH_FAST_TLM
+/* Vd/Vq feed-forward as FOC_Loop.c applies it, captured each 10 kHz step by a
+ * HAND-EDIT there and summed by Fast_Tlm_Accumulate for ext 0x422. V. Written
+ * and read in the same (ADC, prio 0) context, so no volatile/lock needed. */
+typedef struct {
+	float vd_ff;			/* Vd FF after its +/-ff_lim clamp               */
+	float vq_ff;			/* Vq FF after its +/-ff_lim clamp               */
+	float vq_ff_unsat;		/* Vq FF before the clamp                        */
+	float ff_lim;			/* clamp limit, 0.577 * BusVoltage_V (positive)  */
+} fast_tlm_ff_t;
+extern fast_tlm_ff_t fast_tlm_ff;
+#endif
+
+extern CAN_TxQueue_t can_tx_queue;
+extern FDCAN_RxHeaderTypeDef RxMessageBuf;
+
+#endif

@@ -1,0 +1,7 @@
+# Force LF for files that run inside the Linux build container. Without this a
+# Windows checkout (core.autocrlf=true) would give them CRLF and bash would fail
+# on the trailing \r.
+*.sh            text eol=lf
+Dockerfile      text eol=lf
+.dockerignore   text eol=lf
+docker/**       text eol=lf

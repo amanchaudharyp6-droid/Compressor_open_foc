@@ -1,0 +1,8 @@
+PegasusBuild/
+Build/
+Debug/
+/docs/html/
+
+# tools/ log-analysis scripts
+__pycache__/
+*.pyc

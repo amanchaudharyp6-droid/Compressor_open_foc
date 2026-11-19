@@ -1,0 +1,184 @@
+/*
+ * File: FOC_Loop_types.h
+ *
+ * Code generated for Simulink model 'FOC_Loop'.
+ *
+ * Model version                  : 18.444
+ * Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
+ * C/C++ source code generated on : Wed Jun  3 14:26:01 2026
+ *
+ * Target selection: ert.tlc
+ * Embedded hardware selection: ARM Compatible->ARM Cortex-M
+ * Code generation objectives: Unspecified
+ * Validation result: Not run
+ */
+
+#ifndef FOC_Loop_types_h_
+#define FOC_Loop_types_h_
+#include <stdbool.h>
+#include <stdint.h>
+#ifndef DEFINED_TYPEDEF_FOR_Rate_limiterBus_
+#define DEFINED_TYPEDEF_FOR_Rate_limiterBus_
+
+typedef struct {
+  float Id_ramp_up;
+  float Id_ramp_down;
+  float Iq_ramp_up;
+  float Iq_ramp_down;
+  float Torque_gen_ramp_up;
+  float Torque_gen_ramp_down;
+  float Ref_Speed_rate_up;
+  float Ref_Speed_rate_down;
+  float Ref_Speed_rate_down_neutral;
+} Rate_limiterBus;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Flux_PID_MTPA_
+#define DEFINED_TYPEDEF_FOR_Flux_PID_MTPA_
+
+typedef struct {
+  float Kp_flux_PID_MTPA;
+  float Ki_flux_PID_MTPA;
+  float Kd_flux_PID_MTPA;
+  float Filter_flux_PID_MTPA;
+  float Kp_flux_PID_MTPA_low;
+  float Ki_flux_PID_MTPA_low;
+  float Kd_flux_PID_MTPA_low;
+  float Filter_flux_PID_MTPA_low;
+} Flux_PID_MTPA;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Speed_PID_MTPA_
+#define DEFINED_TYPEDEF_FOR_Speed_PID_MTPA_
+
+typedef struct {
+  float Kp_speed_PID_MTPA;
+  float Ki_speed_PID_MTPA;
+  float Kd_speed_PID_MTPA;
+  float Filter_speed_PID_MTPA;
+  float Kp_speed_PID_MTPA_low;
+  float Ki_speed_PID_MTPA_low;
+  float Kd_speed_PID_MTPA_low;
+  float Filter_speed_PID_MTPA_low;
+} Speed_PID_MTPA;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Torque_PID_MTPA_
+#define DEFINED_TYPEDEF_FOR_Torque_PID_MTPA_
+
+typedef struct {
+  float Kp_torque_PID_MTPA;
+  float Ki_torque_PID_MTPA;
+  float Kd_torque_PID_MTPA;
+  float Filter_torque_PID_MTPA;
+  float Kp_torque_PID_MTPA_low;
+  float Ki_torque_PID_MTPA_low;
+  float Kd_torque_PID_MTPA_low;
+  float Filter_torque_PID_MTPA_low;
+} Torque_PID_MTPA;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Selection_
+#define DEFINED_TYPEDEF_FOR_Selection_
+
+typedef struct {
+  float Speed_RPM_limit;
+  float I_limit;
+  float T_limit;
+  bool I_0_T_1_switch;
+} Selection;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_PID_MTPABus_
+#define DEFINED_TYPEDEF_FOR_PID_MTPABus_
+
+typedef struct {
+  Flux_PID_MTPA Flux_PID_MTPA;
+  Speed_PID_MTPA Speed_PID_MTPA;
+  Torque_PID_MTPA Torque_PID_MTPA;
+  float Up_Limit_speed_PID_MTPA;
+  float Low_Limit_speed_PID_MTPA;
+  float Up_Limit_flux_PID;
+  float Low_Limit_flux_PID;
+  float Up_Limit_torque_PID;
+  float Low_Limit_torque_PID;
+  Selection Selection;
+} PID_MTPABus;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_IIR_FilterBus_
+#define DEFINED_TYPEDEF_FOR_IIR_FilterBus_
+
+typedef struct {
+  float Id_Filter_coefficient;
+  bool Id_Filter_switch;
+  float Iq_Filter_coefficient;
+  bool Iq_Filter_switch;
+} IIR_FilterBus;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_Dead_TimeBus_
+#define DEFINED_TYPEDEF_FOR_Dead_TimeBus_
+
+typedef struct {
+  float Switching_Freq;
+  bool Enable;
+} Dead_TimeBus;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_ThrottleBus_
+#define DEFINED_TYPEDEF_FOR_ThrottleBus_
+
+typedef struct {
+  float Throttle_Inst_Voltage;
+  float Max_Output_Value;
+  float Max_Throttle_Voltage;
+  float Min_Throttle_Voltage;
+  float Throttle_V_Hyst_band_FNR_shift;
+} ThrottleBus;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_RegenBus_
+#define DEFINED_TYPEDEF_FOR_RegenBus_
+
+typedef struct {
+  float regen_cap_rpm;
+  float max_Regen_Torque;
+  float RPM_Regen_min_Speed;
+  bool Polarity_switch;
+  bool Regen_Active;
+} RegenBus;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_ThrottleState_
+#define DEFINED_TYPEDEF_FOR_ThrottleState_
+
+typedef enum {
+  Forward = 1,                         /* Default value */
+  Reverse,
+  Neutral,
+  Throttle_Error
+} ThrottleState;
+
+#endif
+
+/* Forward declaration for rtModel */
+typedef struct tag_RTM_FOC_Loop_T RT_MODEL_FOC_Loop_T;
+
+#endif                                 /* FOC_Loop_types_h_ */
+
+/*
+ * File trailer for generated code.
+ *
+ * [EOF]
+ */
